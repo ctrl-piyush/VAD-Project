@@ -1,0 +1,63 @@
+{
+  "root": "C:\\Datasets\\UCF-Crime",
+  "filename_examples": [
+    "Test\\Abuse\\Abuse028_x264_0.png",
+    "Test\\Abuse\\Abuse028_x264_10.png",
+    "Test\\Abuse\\Abuse028_x264_100.png",
+    "Test\\Abuse\\Abuse028_x264_1000.png",
+    "Test\\Abuse\\Abuse028_x264_1010.png"
+  ],
+  "counts": {
+    "test": {
+      "videos": 290,
+      "anomalous": 140,
+      "normal": 150,
+      "images": 111308
+    },
+    "train": {
+      "videos": 1610,
+      "anomalous": 810,
+      "normal": 800,
+      "images": 1266345
+    }
+  },
+  "class_counts": {
+    "test": {
+      "Normal": 150,
+      "RoadAccidents": 23,
+      "Shooting": 23,
+      "Explosion": 21,
+      "Shoplifting": 21,
+      "Burglary": 13,
+      "Arson": 9,
+      "Arrest": 5,
+      "Fighting": 5,
+      "Robbery": 5,
+      "Stealing": 5,
+      "Vandalism": 5,
+      "Assault": 3,
+      "Abuse": 2
+    },
+    "train": {
+      "Normal": 800,
+      "Robbery": 145,
+      "RoadAccidents": 127,
+      "Stealing": 95,
+      "Burglary": 87,
+      "Abuse": 48,
+      "Assault": 47,
+      "Arrest": 45,
+      "Fighting": 45,
+      "Vandalism": 45,
+      "Arson": 41,
+      "Explosion": 29,
+      "Shoplifting": 29,
+      "Shooting": 27
+    }
+  },
+  "problems": {},
+  "problem_counts": {},
+  "warnings": [],
+  "blocking_problem_types": [],
+  "assumptions": "every=10, orig_fps=30.0 (UCF-Crime videos are ~30 fps; effective fps=3.0)"
+}

@@ -1,0 +1,106 @@
+{
+  "cfg": {
+    "project": {
+      "seed": 42,
+      "artifacts_dir": "artifacts",
+      "artifacts_abs": "C:\\Users\\cdaks\\Downloads\\vad-project\\vad-project\\artifacts"
+    },
+    "data": {
+      "root": "data/ucf_crime",
+      "videos_dir": "videos",
+      "train_split": "annotations/Anomaly_Train.txt",
+      "test_split": "annotations/Anomaly_Test.txt",
+      "temporal_annotations": "annotations/Temporal_Anomaly_Annotation_for_Testing_Videos.txt",
+      "source": "frames",
+      "frames_root": "",
+      "gt_divisor": 10,
+      "val_fraction": 0.1,
+      "val_seed": 1234,
+      "anomaly_classes": [
+        "Abuse",
+        "Arrest",
+        "Arson",
+        "Assault",
+        "Burglary",
+        "Explosion",
+        "Fighting",
+        "RoadAccidents",
+        "Robbery",
+        "Shooting",
+        "Shoplifting",
+        "Stealing",
+        "Vandalism"
+      ],
+      "root_abs": "C:\\Users\\cdaks\\Downloads\\vad-project\\vad-project\\data\\ucf_crime"
+    },
+    "preprocess": {
+      "clip_len": 16,
+      "clip_stride": 16,
+      "resize": 112,
+      "crop": 112,
+      "backbone": "r3d_18",
+      "weights": "kinetics400",
+      "batch_clips": 8,
+      "fp16": true,
+      "max_snippets": 0,
+      "frame_every": 10,
+      "pre_resize": 64
+    },
+    "model": {
+      "type": "transformer",
+      "segments": 32,
+      "seq_mode": "fixed",
+      "max_len": 128,
+      "feature_norm": "l2",
+      "d_model": 256,
+      "n_layers": 2,
+      "n_heads": 4,
+      "ff_mult": 2,
+      "dropout": 0.1,
+      "head_hidden": 128
+    },
+    "train": {
+      "epochs": 60,
+      "iters_per_epoch": 40,
+      "batch_size": 32,
+      "lr": 0.0001,
+      "weight_decay": 0.01,
+      "warmup_epochs": 3,
+      "scheduler": "cosine",
+      "grad_accum": 1,
+      "grad_clip": 1.0,
+      "lambda_smooth": 8e-05,
+      "lambda_sparse": 8e-05,
+      "margin": 1.0,
+      "class_balanced": true,
+      "patience": 15,
+      "amp": false,
+      "device": "auto",
+      "wandb": false,
+      "wandb_project": "vad-ucf-crime"
+    },
+    "eval": {
+      "smooth_window": 5,
+      "rel_threshold": 0.5,
+      "min_len_snippets": 1,
+      "merge_gap_snippets": 2,
+      "bootstrap": 1000,
+      "calib_bins": 15
+    },
+    "explain": {
+      "clip_model": "openai/clip-vit-base-patch32",
+      "nli_model": "MoritzLaurer/DeBERTa-v3-base-mnli",
+      "vlm_model": "Salesforce/blip2-opt-2.7b",
+      "top_k": 3,
+      "groundedness_threshold": 0.5
+    }
+  },
+  "seed": 42,
+  "git": null,
+  "manifest_md5": "d7c50b5fc3d47060a7a55375f9f50f09",
+  "n_params": 1252353,
+  "device": "cuda",
+  "n_train": 1449,
+  "n_val": 161,
+  "torch": "2.11.0+cu128"
+}

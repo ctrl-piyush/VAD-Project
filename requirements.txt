@@ -1,0 +1,22 @@
+# Install PyTorch/torchvision FIRST using the command from https://pytorch.org (match your CUDA version)
+torch
+torchvision
+numpy
+pandas
+scipy
+scikit-learn
+pyyaml
+opencv-python
+psutil
+tqdm
+matplotlib
+pytest
+streamlit
+# Optional (Extended tier: explanations). Heavy; install only after the core detector works:
+#   pip install transformers faiss-cpu umap-learn accelerate pillow
+tabulate
+fastapi
+uvicorn
+python-multipart
+requests
+# optional: wandb (set train.wandb=true), transformers/pillow/faiss-cpu/umap-learn (explanations + CLIP ablation)

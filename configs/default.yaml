@@ -1,0 +1,79 @@
+project:
+  seed: 42
+  artifacts_dir: artifacts          # relative to repo root (override: env VAD_ARTIFACTS)
+
+data:
+  root: data/ucf_crime              # override with env VAD_DATA_ROOT
+  videos_dir: videos
+  train_split: annotations/Anomaly_Train.txt
+  test_split: annotations/Anomaly_Test.txt
+  temporal_annotations: annotations/Temporal_Anomaly_Annotation_for_Testing_Videos.txt
+  source: video                     # video | frames  (frames = Kaggle odins0n image copy, see KAGGLE_GUIDE.md)
+  frames_root: ""                    # frames mode: folder that contains Train/ and Test/ (or env VAD_FRAMES_ROOT)
+  gt_divisor: 1                     # frames mode: official GT frame numbers / gt_divisor = extracted-frame index (10 for the Kaggle copy)
+  val_fraction: 0.10                # carved from train, video-level, stratified by class
+  val_seed: 1234                    # fixed so the split never changes between runs
+  anomaly_classes: [Abuse, Arrest, Arson, Assault, Burglary, Explosion,
+                    Fighting, RoadAccidents, Robbery, Shooting,
+                    Shoplifting, Stealing, Vandalism]
+
+preprocess:
+  clip_len: 16
+  clip_stride: 16                   # 16 = non-overlapping snippets
+  resize: 128                       # short side resize
+  crop: 112                         # center crop
+  backbone: r3d_18                  # r3d_18 | r2plus1d_18 | mc3_18
+  weights: kinetics400              # kinetics400 | none (none = random init, smoke tests only!)
+  batch_clips: 8                    # auto-halved on CUDA OOM
+  fp16: true
+  max_snippets: 0                   # 0 = no limit
+  frame_every: 1                    # keep every N-th frame of a VIDEO (10 mimics the Kaggle frame copy; used by dashboard upload)
+  pre_resize: 0                     # >0: resize each frame to pre_resize x pre_resize first (64 mimics the Kaggle copy)
+
+model:
+  type: transformer                 # baseline | transformer
+  segments: 32                      # T: fixed number of segments per video
+  seq_mode: fixed                   # fixed | variable (variable = pad+mask, capped at max_len)
+  max_len: 128
+  feature_norm: l2                  # none | l2 | zscore  (zscore stats are fit on TRAIN only)
+  d_model: 256
+  n_layers: 2
+  n_heads: 4
+  ff_mult: 2
+  dropout: 0.1
+  head_hidden: 128
+
+train:
+  epochs: 60
+  iters_per_epoch: 40
+  batch_size: 32                    # half anomalous, half normal
+  lr: 0.0001
+  weight_decay: 0.01
+  warmup_epochs: 3
+  scheduler: cosine                 # cosine | none
+  grad_accum: 1
+  grad_clip: 1.0
+  lambda_smooth: 0.00008
+  lambda_sparse: 0.00008
+  margin: 1.0
+  class_balanced: true              # sample anomaly classes uniformly
+  patience: 15                      # early stopping on val video AUC
+  amp: false                        # mixed precision (CUDA only)
+  device: auto                      # auto | cuda | cpu
+  wandb: false                      # true = log to Weights & Biases (pip install wandb; WANDB_MODE=offline works)
+  wandb_project: vad-ucf-crime
+
+eval:
+  smooth_window: 5
+  rel_threshold: 0.5
+  min_len_snippets: 1
+  merge_gap_snippets: 2
+  bootstrap: 1000
+  calib_bins: 15
+
+explain:                            # Extended tier (needs transformers + faiss)
+  clip_model: openai/clip-vit-base-patch32
+  nli_model: MoritzLaurer/DeBERTa-v3-base-mnli
+  vlm_model: Salesforce/blip2-opt-2.7b
+  top_k: 3
+  groundedness_threshold: 0.5       # PLACEHOLDER: tune on your labelled explanations

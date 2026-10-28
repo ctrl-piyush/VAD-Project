@@ -1,0 +1,18 @@
+# One-factor-at-a-time ladder. Each experiment = ONE seed, selected by VALIDATION video AUC only.
+# Edit freely. Run: python -m vad.tune            (results -> artifacts/reports/tuning_table.csv)
+seed: 42
+experiments:
+  - {name: base_default,   set: ["model.type=baseline"]}
+  - {name: tf_default,     set: []}
+  - {name: tf_lr3e-4,      set: ["train.lr=0.0003"]}
+  - {name: tf_lr3e-5,      set: ["train.lr=0.00003"]}
+  - {name: tf_wd0.1,       set: ["train.weight_decay=0.1"]}
+  - {name: tf_drop0.3,     set: ["model.dropout=0.3"]}
+  - {name: tf_layers1,     set: ["model.n_layers=1"]}
+  - {name: tf_layers4,     set: ["model.n_layers=4"]}
+  - {name: tf_d128,        set: ["model.d_model=128"]}
+  - {name: tf_T64,         set: ["model.segments=64"]}
+  - {name: tf_zscore,      set: ["model.feature_norm=zscore"]}
+  - {name: tf_nobalance,   set: ["train.class_balanced=false"]}
+  - {name: tf_smooth0,     set: ["train.lambda_smooth=0", "train.lambda_sparse=0"]}
+  - {name: tf_bs64,        set: ["train.batch_size=64"]}

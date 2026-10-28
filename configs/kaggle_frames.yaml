@@ -1,0 +1,12 @@
+# Use with:  --config configs/kaggle_frames.yaml   (inherits everything from default.yaml)
+base: default.yaml
+data:
+  source: frames
+  gt_divisor: 10                    # Kaggle copy keeps every 10th frame
+preprocess:
+  resize: 112                       # source frames are 64x64: upscale directly to the backbone size (no cropping)
+  crop: 112
+  clip_len: 16                      # 16 SAMPLED frames (= 160 original frames, ~5 s at 30 fps)
+  clip_stride: 16                   # try 8 for finer localisation (2x more snippets, 2x extraction time)
+  frame_every: 10                   # so that dashboard video uploads go through the same pipeline
+  pre_resize: 64
